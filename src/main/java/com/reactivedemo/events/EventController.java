@@ -18,6 +18,15 @@ public class EventController {
 
     @GetMapping("/events")
     public ResponseEntity<List<Event>> getAllEvents() {
+        System.out.println("Current Thread Name: "
+                        + Thread.currentThread().getName());
+
+//        try {
+//            Thread.sleep(10000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
         return new ResponseEntity<>(repository.findAll(), HttpStatus.OK);
     }
 
