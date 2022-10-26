@@ -1,24 +1,22 @@
 package com.reactivedemo.events;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public class EventService {
 
-    @Autowired
-    RestTemplateBuilder restTemplateBuilder;
+    public Flux<Event> getAllEvents() {
 
-    public List<Event> getAllEvents() {
-        restTemplateBuilder.build().getForObject("https://httpbin.org/delay/30", ResponseStub.class);
-        return List.of(new Event("1", "Geeknight-Bangalore", "Blockchain technologies"));
+        return WebClient.create("https://httpbin.org/delay/30").get().retrieve()
+                .bodyToMono(ResponseStub.class)
+                .thenMany(Flux.just(new Event("1", "Geeknight-Bangalore", "Blockchain technologies")));
     }
 
-    public Event upcomingEvent() {
-        return new Event("1", "Reactive-workshop-Bangalore", "Reactive programming concepts");
+    public Mono<Event> upcomingEvent() {
+        return Mono.just(new Event("1", "Reactive-workshop-Bangalore", "Reactive programming concepts"));
     }
 }
 

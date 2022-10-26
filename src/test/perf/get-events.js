@@ -6,6 +6,6 @@ export default function () {
 }
 
 export const options = {
-  vus: 4,
-  iterations: 4,
+  vus: 40,
+  iterations: 80,
 };
